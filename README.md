@@ -102,20 +102,20 @@ Note: <i>add_points</i> endpoint expects transactionDate in unix timestamp forma
 ## Results:
 ### Login to system as admin
 You can see the JWT token (authJWT) in the response body.
-![login](Fetch_Rewards-API/results/Login_admin.png) 
+![login](results/Login_admin.png) 
 
 ### Get all users in the system
 You can see the userId of all users. Take the required user's userId. 
-![login](Fetch_Rewards-API/results/all_users.png) 
+![login](results/all_users.png) 
 
 ### Add points 
 Add points to user account for specific payer and date (in unix timestamp).
-![login](Fetch_Rewards-API/results/add_points.png) 
+![login](results/add_points.png) 
 
 ### Deduct points
 Deduct points from the user account. It returns a list of [payer, points deducted] for each call to spend points.
-![login](Fetch_Rewards-API/results/deduct.png) 
+![login](results/deduct.png) 
 
 ### Points balance
 Returns points balance of the user that would list all positive points per payer.
-![login](Fetch_Rewards-API/results/points_bal.png) 
+![login](results/points_bal.png) 
