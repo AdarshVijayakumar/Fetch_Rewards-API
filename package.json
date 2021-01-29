@@ -1,0 +1,23 @@
+{
+  "name": "resource-manager-api",
+  "version": "0.0.0",
+  "description": "Resource Manager API",
+  "main": "app.js",
+  "author": {
+    "name": "Adarsh"
+  },
+  "dependencies": {
+    "async": "^2.3.0",
+    "cors": "^2.8.3",
+    "express": "3.4.4",
+    "jade": "*",
+    "md5": "2.3.0",
+    "sqlite3": "^5.0.1",
+    "uuid": "3.3.3",
+    "jsonwebtoken": "8.5.1",
+    "swagger-ui-express": "4.1.4",
+    "swagger-jsdoc": "6.0.1",
+    "swagger-ui-dist": "3.41.0",
+    "swagger-ui": "3.41.0"
+  }
+}

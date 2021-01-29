@@ -1,0 +1,305 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a web service for handling reward points upon user transactions with payers.",
+    "version": "1.0.0",
+    "title": "rewards-web-service",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": { "url": "https://adarshvijayakumar.github.io/" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:3050",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Authorisation, Authentiation and user related queries."
+    },
+    {
+      "name": "RewardTransactions",
+      "description": "All operations to update rewards and related queries."
+    }
+  ],
+  "schemes": ["http"],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User Authorisation",
+        "description": "Validates the username and password and returns a JWT token on success.",
+        "consumes": ["application/x-www-form-urlencoded"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "formData",
+            "description": "Unique username for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Password for the user login.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login Successful",
+            "schema": { "$ref": "#/definitions/LoginResponse" }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User Creation",
+        "description": "Creates a new user.",
+        "consumes": ["application/x-www-form-urlencoded"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "formData",
+            "description": "Unique username for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Password for the user login.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "firstname",
+            "in": "formData",
+            "description": "Firstname of the user.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastname",
+            "in": "formData",
+            "description": "Lastname of the user.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "role",
+            "in": "formData",
+            "description": "Role of the user in the application. One of ('USER'/'ADMIN'). Default is 'USER'",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Creation successful."
+          }
+        }
+      }
+    },
+    "/all_users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Retrieve list of users.",
+        "description": "Returns the list of users in the system. The requesting user needs to be an 'ADMIN'",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "authJwt",
+            "description": "JWT token obtained after login.",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Auth" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of users",
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        }
+      }
+    },
+    "/add_points": {
+      "post": {
+        "tags": ["RewardTransactions"],
+        "summary": "Adds reward points for a particular transaction by a payer.",
+        "description": "Adds reward points to the user if points is positive. However, deducts points from oldest transaction if points is negative.",
+        "consumes": ["application/x-www-form-urlencoded"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "payer",
+            "description": "The payer name who is providing the reward points.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "points",
+            "description": "The number of points to be added",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "formData",
+            "name": "transactionDate",
+            "description": "The transaction datetime in unix timestamp.",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "formData",
+            "name": "userId",
+            "description": "User id of the user whose points needs to be updated.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Points updation successful" }
+        }
+      }
+    },
+    "/deduct_points": {
+      "post": {
+        "tags": ["RewardTransactions"],
+        "summary": "Deducts the specified amount of points from the user.",
+        "description": "Deducts points from the oldest transactions.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "deductPoints",
+            "description": "The number of points to be deducted.",
+            "required": true,
+            "schema": { "$ref": "#/definitions/DeductPoints" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Points updation successful" }
+        }
+      }
+    },
+    "/points_balance": {
+      "post": {
+        "tags": ["RewardTransactions"],
+        "summary": "Retrieves available reward points for the user per payer.",
+        "description": "Returns the points available for every payer with whom the user has made transactions.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "pointsBalance",
+            "description": "User id of the user whose points needs to be updated.",
+            "required": true,
+            "schema": { "$ref": "#/definitions/PointsBalance" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": { "$ref": "#/definitions/Reward" }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "authJwt": { "type": "string" }
+      }
+    },
+    "RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "A unique id for the user."
+        },
+        "username": {
+          "type": "string",
+          "description": "A unique name for the user."
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the user in the system."
+        }
+      }
+    },
+    "Reward": {
+      "type": "object",
+      "properties": {
+        "payer": {
+          "type": "string",
+          "description": "Payer name for the points."
+        },
+        "points": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Amount of points available for this payer."
+        }
+      }
+    },
+    "Auth": {
+      "type": "object",
+      "properties": {
+        "authJwt": {
+          "type": "string",
+          "description": "JWT token received after login."
+        }
+      }
+    },
+    "DeductPoints": {
+      "type": "object",
+      "properties": {
+        "points": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Reward points."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Id of the user whose rewards need to be updated."
+        }
+      }
+    },
+    "PointsBalance": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Id of the user whose rewards need to be fetched."
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
