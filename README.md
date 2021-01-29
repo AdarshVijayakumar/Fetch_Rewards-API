@@ -117,5 +117,5 @@ Deduct points from the user account. It returns a list of [payer, points deducte
 ![login](results/deduct.png) 
 
 ### Points balance
-Returns points balance of the user that would list all positive points per payer.
+Returns points balance of the user that will list all positive points per payer.
 ![login](results/points_bal.png) 
