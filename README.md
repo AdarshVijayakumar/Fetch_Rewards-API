@@ -1,4 +1,4 @@
-# rewards-web-service
+# Fetch Rewards - web service api
 
 This is a web API service built using node.js and express.js. The service exposes basic end points to create user and update reward points of a user and retrieve the same.
 
